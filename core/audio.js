@@ -10,9 +10,7 @@ class AudioEngine {
 
   async play(query) {
     this.stop();
-    // SoundCloud search use kar rahe hain
     const search = query.startsWith('http') ? query : `scsearch1:${query}`;
-    
     const ytdlp = spawn('/usr/local/bin/yt-dlp', [search, '--get-url', '--format', 'bestaudio']);
 
     let url = '';
@@ -20,13 +18,10 @@ class AudioEngine {
 
     ytdlp.on('close', () => {
       url = url.trim();
-      if (!url) return console.log("[AUDIO] Song search failed.");
-
-      console.log(`[STREAM] Streaming song...`);
+      if (!url) return;
       this.ffmpeg = spawn('ffmpeg', [
         '-re', '-i', url, '-f', 's16le', '-ar', '48000', '-ac', '1', '-loglevel', 'quiet', 'pipe:1'
       ]);
-
       this.ffmpeg.stdout.on('data', (buffer) => {
         const samples = new Int16Array(buffer.buffer, buffer.byteOffset, buffer.byteLength / 2);
         this.source.onData({ samples, sampleRate: 48000, bitsPerSample: 16, channelCount: 1 });
