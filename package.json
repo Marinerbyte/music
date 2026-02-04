@@ -1,0 +1,11 @@
+{
+  "name": "howdies-live-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "ws": "^8.13.0",
+    "mediasoup-client": "^3.6.93",
+    "wrtc": "^0.4.7",
+    "uuid": "^9.0.0"
+  }
+}
